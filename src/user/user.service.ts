@@ -18,6 +18,14 @@ export class UserService {
         });
     }
 
+    async findByUsername(username: string): Promise<User> {
+        return await this.userRepository.findOne({
+            where: {
+                username: username,
+            }
+        });
+    }
+
     async findById(id: number): Promise<User> {
         return await this.userRepository.findOne({
             where: {
@@ -27,7 +35,7 @@ export class UserService {
     }
 
     async create(user: User): Promise<User> {
-        return await this.userRepository.save(user);
+        return await this.userRepository.save(this.userRepository.create(user));
     }
 
 }

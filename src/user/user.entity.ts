@@ -1,5 +1,5 @@
 import { Entity, Column, PrimaryGeneratedColumn, BeforeInsert } from 'typeorm';
-import { hashSync } from 'bcrypt';
+import { hashSync } from 'bcrypt-nodejs';
 import { IsEmail, Length, IsAlphanumeric } from 'class-validator';
 import { Trim } from 'class-sanitizer';
 import BaseEntity from 'src/helper/base.entity';
@@ -9,11 +9,12 @@ export class User extends BaseEntity {
 
     @BeforeInsert()
     useHashed() {
-        if (this.password.length >= 6) {
+        if (this.password.length >= 6 && this.password.length <=32) {
             this.password = hashSync(this.password);
         }
         else {
-            throw ("Password Too Short");
+            if (this.password.length !== 60)
+                throw ("Invalid Password");
         }
     }
 
@@ -21,7 +22,7 @@ export class User extends BaseEntity {
     id: number;
 
     @Column({ length: 50, unique: true, nullable: false })
-    @Length(6, 50)
+    @Length(3, 50)
     @Trim()
     @IsAlphanumeric()
     username: string;
@@ -31,6 +32,9 @@ export class User extends BaseEntity {
     @Trim()
     email: string;
 
-    @Column({ length: 100 })
+    @Column({ length: 60 })
     password: string;
+
+    @Column({ default: false })
+    isConfirmed: Boolean
 }

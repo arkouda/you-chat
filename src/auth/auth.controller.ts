@@ -1,6 +1,8 @@
-import { Controller, Post, Body } from '@nestjs/common';
+import { Controller, Post, Body, Query, Get } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { User } from '../user/user.entity';
+
+type WebToken = { token: string }
 
 @Controller('auth')
 export class AuthController {
@@ -14,5 +16,10 @@ export class AuthController {
     @Post('register')
     async register(@Body() user: User): Promise<any> {
         return this.authService.register(user);
+    }
+
+    @Get('confirm')
+    async confirm(@Query() webToken: WebToken): Promise<any> {
+        return this.authService.confirm(webToken.token);
     }
 }
