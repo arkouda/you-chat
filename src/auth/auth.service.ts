@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, HttpException, HttpStatus } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { UserService } from '../user/user.service';
 import { User } from '../user/user.entity';
@@ -66,17 +66,18 @@ export class AuthService {
             });
     }
 
-    public async register(user: User): Promise<any> {
+    public async register(user: any): Promise<any> {
         let payload = user.username;
         let accessToken = this.jwtService.sign(
             { data: payload },
             { expiresIn: '1d' });
         return this.userService.create(user)
-        .then(async () => {
-            await generateMailOptionsAndSend(user.email, accessToken);
-        }).catch((e) => {
-            console.error(e);
-            return e;
-        });
+            .then(async () => {
+                await generateMailOptionsAndSend(user.email, accessToken);
+                return { status: 200 };
+            }).catch((e) => {
+                console.error(e);
+                throw new HttpException({ message: e.message }, HttpStatus.BAD_REQUEST);
+            });
     }
 }
