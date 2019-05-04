@@ -14,7 +14,6 @@ export class AuthService {
     ) { }
 
     private async setConfirm(user: User) {
-        console.log('setConfirm Called');
         user.isConfirmed = true;
         return await this.userService.create(user);
     }

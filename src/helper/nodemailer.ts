@@ -8,7 +8,7 @@ var transporter = nodemailer.createTransport({
 });
 
 export function generateMailOptionsAndSend(userEmail: string, accessToken: string) {
-    const url = 'http://localhost:3000/auth/confirm?token=';
+    const url = 'http://localhost:3001/auth/confirm?token=';
     var mailOptions = {
         from: 'youchat.confirm@gmail.com',
         to: userEmail,
