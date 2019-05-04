@@ -14,6 +14,7 @@ export class AuthService {
     ) { }
 
     private async setConfirm(user: User) {
+        console.log('setConfirm Called');
         user.isConfirmed = true;
         return await this.userService.create(user);
     }
@@ -31,7 +32,7 @@ export class AuthService {
     public async login(user: User): Promise<any | { status: number }> {
         return this.validate(user).then((userData) => {
             if (!userData) {
-                return { status: 404 };
+                throw new HttpException(JSON.stringify({ message: 'AccessToken Expired' }), HttpStatus.UNAUTHORIZED);
             }
             var accessToken = null;
             if (compareSync(user.password, userData.password)) {
@@ -40,7 +41,7 @@ export class AuthService {
                     { data: payload },
                     { expiresIn: '1d' });
             } else {
-                return { status: 401 };
+                throw new HttpException(JSON.stringify({ message: 'Username/Password Incorrect' }), HttpStatus.UNAUTHORIZED);
             }
 
             return {
