@@ -20,6 +20,10 @@ async function bootstrap() {
       io.sockets.emit('newMessage', { message: data.message, username: data.username });
       // console.log(data.message);
     });
+
+    client.on('addUserOnline', (data) => {
+      io.sockets.emit('addUserOnline', { newUser: data.username });
+    });
   });
 
 }
