@@ -23,7 +23,7 @@
     "@nestjs/common": "^6.0.0",
     "@nestjs/core": "^6.0.0",
     "@nestjs/jwt": "^6.0.0",
-    "@nestjs/platform-express": "^6.0.0",
+    "@nestjs/platform-express": "^6.11.11",
     "@nestjs/typeorm": "^6.1.0",
     "@types/bcrypt-nodejs": "0.0.30",
     "bcrypt-nodejs": "0.0.3",
